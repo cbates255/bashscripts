@@ -2,17 +2,16 @@
 
 #script to add username with home directory, and check to make sure the username doesn't already exist
 
-echo "Enter the name of the new user"
-read newname
+for newname in "$@"; do
 
-grep "$newname" /etc/group >/dev/null
+grep "$newname" /etc/passwd >/dev/null
 
-if [ $? -eq 0 ]
+if [ $? -eq 0 ];
 then 
-	echo "This username already exists"
-	exit 1
+	echo "The name $newname already exists"
 else
 	sudo useradd -m $newname > /dev/null
+	echo "The name $newname has been created"
 fi
-
+done
 
